@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoteVault - Supabase Auth Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+      color: #667eea;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    
+    h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.3s;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+    
+    button:hover {
+      background: #5568d3;
+    }
+    
+    button.secondary {
+      background: #6c757d;
+    }
+    
+    button.secondary:hover {
+      background: #5a6268;
+    }
+    
+    button.danger {
+      background: #dc3545;
+    }
+    
+    button.danger:hover {
+      background: #c82333;
+    }
+    
+    pre {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .status {
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 NoteVault Auth Test</h1>
+    <p class="subtitle">Day 02 - Testing Supabase Authentication</p>
+    
+    <div id="status"></div>
+    
+    <!-- Configuration Section -->
+    <div class="section">
+      <h2>⚙️ Configuration</h2>
+      <input id="supabaseUrl" type="text" placeholder="Supabase URL (https://xxx.supabase.co)">
+      <input id="supabaseKey" type="text" placeholder="Supabase Anon Key">
+      <button onclick="initSupabase()">Initialize Supabase</button>
+    </div>
+    
+    <!-- Sign Up Section -->
+    <div class="section">
+      <h2>📝 Sign Up New User</h2>
+      <input id="signupEmail" type="email" placeholder="Email">
+      <input id="signupPassword" type="password" placeholder="Password (min 6 chars)">
+      <input id="signupUsername" type="text" placeholder="Username">
+      <button onclick="signUp()">Sign Up</button>
+    </div>
+    
+    <!-- Login Section -->
+    <div class="section">
+      <h2>🔓 Login</h2>
+      <input id="loginEmail" type="email" placeholder="Email">
+      <input id="loginPassword" type="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+    
+    <!-- User Actions -->
+    <div class="section">
+      <h2>👤 User Actions</h2>
+      <button onclick="getUser()">Get Current User</button>
+      <button onclick="getProfile()">Get Profile</button>
+      <button class="secondary" onclick="getSession()">Get Session</button>
+      <button class="danger" onclick="logout()">Logout</button>
+    </div>
+    
+    <!-- Output -->
+    <div class="section">
+      <h2>📋 Output</h2>
+      <pre id="output">Results will appear here...</pre>
+    </div>
+  </div>
+
+  <script>
+    let supabase = null;
+    
+    function showStatus(message, type = 'info') {
+      const statusDiv = document.getElementById('status');
+      statusDiv.className = `status ${type}`;
+      statusDiv.textContent = message;
+      statusDiv.style.display = 'block';
+      
+      setTimeout(() => {
+        statusDiv.style.display = 'none';
+      }, 5000);
+    }
+    
+    function showOutput(data) {
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    }
+    
+    function initSupabase() {
+      const url = document.getElementById('supabaseUrl').value;
+      const key = document.getElementById('supabaseKey').value;
+      
+      if (!url || !key) {
+        showStatus('Please enter Supabase URL and Anon Key', 'error');
+        return;
+      }
+      
+      try {
+        supabase = window.supabase.createClient(url, key);
+        showStatus('✅ Supabase initialized successfully!', 'success');
+        localStorage.setItem('supabaseUrl', url);
+        localStorage.setItem('supabaseKey', key);
+      } catch (error) {
+        showStatus('❌ Failed to initialize Supabase: ' + error.message, 'error');
+      }
+    }
+    
+    async function signUp() {
+      if (!supabase) {
+        showStatus('Please initialize Supabase first', 'error');
+        return;
+      }
+      
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const username = document.getElementById('signupUsername').value;
+      
+      if (!email || !password || !username) {
+        showStatus('Please fill all signup fields', 'error');
+        return;
+      }
+      
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              username: username
+            }
+          }
+        });
+        
+        if (error) throw error;
+        
+        showStatus('✅ User created successfully! Check profiles table.', 'success');
+        showOutput({ 
+          message: 'Sign up successful',
+          user: data.user,
+          session: data.session 
+        });
+      } catch (error) {
+        showStatus('❌ Signup failed: ' + error.message, 'error');
+        showOutput({ error: error.message });
+      }
+    }
+    
+    async function login() {
+      if (!supabase) {
+        showStatus('Please initialize Supabase first', 'error');
+        return;
+      }
+      
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (!email || !password) {
+        showStatus('Please fill all login fields', 'error');
+        return;
+      }
+      
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+        
+        if (error) throw error;
+        
+        showStatus('✅ Login successful!', 'success');
+        showOutput({
+          message: 'Login successful',
+          user: data.user,
+          accessToken: data.session.access_token.substring(0, 50) + '...'
+        });
+      } catch (error) {
+        showStatus('❌ Login failed: ' + error.message, 'error');
+        showOutput({ error: error.message });
+      }
+    }
+    
+    async function logout() {
+      if (!supabase) {
+        showStatus('Please initialize Supabase first', 'error');
+        return;
+      }
+      
+      try {
+        const { error } = await supabase.auth.signOut();
+        
+        if (error) throw error;
+        
+        showStatus('✅ Logged out successfully', 'success');
+        showOutput({ message: 'Logged out successfully' });
+      } catch (error) {
+        showStatus('❌ Logout failed: ' + error.message, 'error');
+        showOutput({ error: error.message });
+      }
+    }
+    
+    async function getUser() {
+      if (!supabase) {
+        showStatus('Please initialize Supabase first', 'error');
+        return;
+      }
+      
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error) throw error;
+        
+        if (user) {
+          showStatus('✅ User retrieved', 'success');
+          showOutput({
+            id: user.id,
+            email: user.email,
+            username: user.user_metadata.username,
+            created_at: user.created_at
+          });
+        } else {
+          showStatus('No user logged in', 'info');
+          showOutput({ message: 'No user logged in' });
+        }
+      } catch (error) {
+        showStatus('❌ Failed: ' + error.message, 'error');
+        showOutput({ error: error.message });
+      }
+    }
+    
+    async function getProfile() {
+      if (!supabase) {
+        showStatus('Please initialize Supabase first', 'error');
+        return;
+      }
+      
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          showStatus('Please login first', 'error');
+          return;
+        }
+        
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (error) throw error;
+        
+        showStatus('✅ Profile retrieved', 'success');
+        showOutput(data);
+      } catch (error) {
+        showStatus('❌ Failed: ' + error.message, 'error');
+        showOutput({ error: error.message });
+      }
+    }
+    
+    async function getSession() {
+      if (!supabase) {
+        showStatus('Please initialize Supabase first', 'error');
+        return;
+      }
+      
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) throw error;
+        
+        if (session) {
+          showStatus('✅ Session retrieved', 'success');
+          showOutput({
+            user_id: session.user.id,
+            access_token: session.access_token.substring(0, 50) + '...',
+            expires_at: new Date(session.expires_at * 1000).toLocaleString()
+          });
+        } else {
+          showStatus('No active session', 'info');
+          showOutput({ message: 'No active session' });
+        }
+      } catch (error) {
+        showStatus('❌ Failed: ' + error.message, 'error');
+        showOutput({ error: error.message });
+      }
+    }
+    
+    // Auto-load saved credentials
+    window.onload = function() {
+      const savedUrl = localStorage.getItem('supabaseUrl');
+      const savedKey = localStorage.getItem('supabaseKey');
+      
+      if (savedUrl && savedKey) {
+        document.getElementById('supabaseUrl').value = savedUrl;
+        document.getElementById('supabaseKey').value = savedKey;
+        initSupabase();
+      }
+    };
+  </script>
+</body>
+</html>
