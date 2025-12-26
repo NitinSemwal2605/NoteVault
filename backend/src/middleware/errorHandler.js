@@ -29,7 +29,7 @@ export const errorHandler = (err, req, res, next) => {
 };
 
 /**
- * 404 handler for undefined routes
+ * 404 handler for undefined routes for not found routes 
  */
 export const notFound = (req, res) => {
   res.status(404).json({
