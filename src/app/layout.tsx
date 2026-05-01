@@ -17,9 +17,9 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "NoteVaults — Remember Everything. Forget Nothing.",
+  title: "NotesVaults — Remember Everything. Forget Nothing.",
   description:
-    "NoteVaults automatically resurfaces your notes at the exact moment you're about to forget them. Built for students, developers, and lifelong learners.",
+    "NotesVaults automatically resurfaces your notes at the exact moment you're about to forget them. Built for students, developers, and lifelong learners.",
   keywords: [
     "spaced repetition",
     "note taking",

@@ -1,8 +1,8 @@
-# NoteVaults
+# NotesVaults
 
-NoteVaults is a smart memory engine and note-taking application designed for lifelong learners. It uses intelligent recall and adaptive scheduling to help you remember everything you learn.
+NotesVaults is a smart memory engine and note-taking application designed for lifelong learners. It uses intelligent recall and adaptive scheduling to help you remember everything you learn.
 
-This repository contains the front-end landing page for NoteVaults, featuring a modern, minimalist black-and-white aesthetic, interactive GSAP scroll animations, and a fully responsive design.
+This repository contains the front-end landing page for NotesVaults, featuring a modern, minimalist black-and-white aesthetic, interactive GSAP scroll animations, and a fully responsive design.
 
 ## Tech Stack
 

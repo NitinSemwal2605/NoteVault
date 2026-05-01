@@ -19,7 +19,7 @@ export default function Footer() {
               className="flex items-center gap-2 font-[var(--font-plus-jakarta)] text-lg font-extrabold text-[#1A1A1A] mb-3 tracking-tight"
             >
               <span className="text-xl" aria-hidden="true">📝</span>
-              NoteVaults
+              NotesVaults
             </a>
             <p className="text-sm text-[#A3A3A3] leading-relaxed">
               Remember everything.
@@ -54,7 +54,7 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between mt-6 gap-3">
           <p className="text-xs text-[#A3A3A3]">
-            © {new Date().getFullYear()} NoteVaults. All rights reserved.
+            © {new Date().getFullYear()} NotesVaults. All rights reserved.
           </p>
           <p className="text-xs text-[#A3A3A3]">
             Made with 🧠 for lifelong learners

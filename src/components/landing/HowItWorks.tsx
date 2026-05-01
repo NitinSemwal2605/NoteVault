@@ -20,7 +20,7 @@ const steps = [
     num: "02",
     icon: CalendarClock,
     title: "Schedule",
-    desc: "NoteVaults calculates your optimal review intervals automatically.",
+    desc: "NotesVaults calculates your optimal review intervals automatically.",
     emoji: "📅",
   },
   {

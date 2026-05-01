@@ -18,7 +18,7 @@ const blogs = [
   },
   {
     title: "How building a 'Second Brain' reduces cognitive overload",
-    excerpt: "Stop trying to hold everything in your head. Learn how offloading tasks to NoteVaults frees up mental RAM.",
+    excerpt: "Stop trying to hold everything in your head. Learn how offloading tasks to NotesVaults frees up mental RAM.",
     date: "Apr 05, 2026",
     category: "Productivity",
     readTime: "4 min read"
