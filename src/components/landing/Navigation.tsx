@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(useGSAP);
 
@@ -34,6 +34,7 @@ export default function Navigation() {
         duration: 0.5,
         delay: 0.1,
         ease: "power2.out",
+        clearProps: "all",
       });
     },
     { scope: navRef }
@@ -42,11 +43,12 @@ export default function Navigation() {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${
         scrolled
-          ? "bg-white/90 backdrop-blur-lg border-b border-[#E5E5E5] py-3"
-          : "bg-white py-5"
+          ? "bg-white border-b border-[#E5E5E5] py-3 shadow-sm"
+          : "bg-white py-5 border-b border-transparent"
       }`}
+      style={{ backgroundColor: "#ffffff" }}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between">
@@ -85,12 +87,14 @@ export default function Navigation() {
             >
               Sign In
             </a>
-            <Button
-              className="rounded-full bg-[#1A1A1A] text-white text-[14px] px-6 h-[40px] hover:bg-[#333] transition-all duration-200 font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
-              aria-label="Get Started"
-            >
-              Get Started
-            </Button>
+            <a href="/waitlist">
+              <Button
+                className="rounded-full bg-[#1A1A1A] text-white text-[14px] px-6 h-[40px] hover:bg-[#333] transition-all duration-200 font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
+                aria-label="Get Started"
+              >
+                Get Started
+              </Button>
+            </a>
 
             {/* Mobile menu toggle */}
             <button

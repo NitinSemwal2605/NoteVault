@@ -38,12 +38,14 @@ export default function CTASection() {
           <h2 className="font-[var(--font-plus-jakarta)] text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-5 leading-tight tracking-tight">
             Start building your second brain — today.
           </h2>
-          <Button
-            className="mt-6 rounded-lg bg-white text-[#1A1A1A] text-sm px-8 h-12 hover:bg-[#F5F5F5] transition-all duration-200 font-semibold cursor-pointer"
-            aria-label="Get Started Free"
-          >
-            Get Started Free →
-          </Button>
+          <a href="/waitlist">
+            <Button
+              className="mt-6 rounded-lg bg-white text-[#1A1A1A] text-sm px-8 h-12 hover:bg-[#F5F5F5] transition-all duration-200 font-semibold cursor-pointer"
+              aria-label="Get Started Free"
+            >
+              Get Started Free →
+            </Button>
+          </a>
         </div>
       </div>
     </section>

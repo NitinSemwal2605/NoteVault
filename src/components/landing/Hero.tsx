@@ -1,20 +1,19 @@
 "use client";
 
-import { useRef } from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import Image from "next/image";
+import { useRef } from "react";
 
 gsap.registerPlugin(useGSAP);
 
 /* Thought-bubbles / task items that float around the illustration */
 const bubbles = [
-  { text: "📝 Finish essay draft", x: "right-[60%]", y: "top-[10%]", delay: 0.6 },
-  { text: "🎸 Guitar practice", x: "right-[5%]", y: "top-[15%]", delay: 0.8 },
-  { text: "🧪 Chemistry formulas", x: "right-[65%]", y: "top-[40%]", delay: 1.0 },
-  { text: "🇪🇸 Spanish vocab", x: "right-[15%]", y: "top-[45%]", delay: 1.2 },
-  { text: "📸 Edit photos", x: "right-[70%]", y: "top-[70%]", delay: 1.4 },
+  { text: "📝 Finish essay draft", x: "left-[0%]", y: "top-[5%]", delay: 0.6 },
+  { text: "🎸 Guitar practice", x: "right-[-5%]", y: "top-[15%]", delay: 0.8 },
+  { text: "🧪 Chemistry formulas", x: "left-[-18%]", y: "top-[40%]", delay: 1.0 },
+  { text: "🇪🇸 Spanish vocab", x: "right-[-18%]", y: "top-[50%]", delay: 1.2 },
+  { text: "📸 Edit photos", x: "left-[5%]", y: "top-[75%]", delay: 1.4 },
 ];
 
 export default function Hero() {
@@ -81,11 +80,10 @@ export default function Hero() {
               </span>
             </div>
 
-            {/* H1 — short and punchy */}
             <h1 className="hero-h1 font-[var(--font-plus-jakarta)] text-[52px] sm:text-[68px] lg:text-[80px] font-extrabold leading-[1.05] tracking-tight text-[#1A1A1A] mb-6">
               <span className="block">Remember</span>
               <span className="block">
-                every<span className="sketch-circle">thing.</span>
+                every<span className="inline-block relative ml-1 sm:ml-2 px-3 sm:px-5 py-0 sm:py-1 bg-[#1A1A1A] text-white rounded-2xl transform -rotate-2 shadow-[6px_6px_0_#E5E5E5] align-baseline pb-1">thing.</span>
               </span>
             </h1>
 
@@ -97,7 +95,7 @@ export default function Hero() {
             {/* CTAs */}
             <div className="hero-cta-row flex flex-wrap items-center gap-3">
               <a
-                href="#"
+                href="/waitlist"
                 className="inline-flex items-center justify-center rounded-full bg-[#1A1A1A] text-white text-[15px] px-7 h-12 hover:bg-[#333] transition-all duration-200 font-bold shadow-[3px_3px_0_rgba(26,26,26,1)] hover:shadow-[5px_5px_0_rgba(26,26,26,1)] hover:-translate-y-0.5"
               >
                 Try it free
@@ -127,14 +125,14 @@ export default function Hero() {
               ))}
             </div>
 
-            {/* Girl illustration */}
+            {/* Team illustration */}
             <div className="hero-girl relative z-10 w-[280px] sm:w-[340px] lg:w-[420px] pb-10">
               <Image
-                src="/girl-tasks.png"
-                alt="A girl adding tasks and notes on her device"
+                src="/team_tasks_illustration.png"
+                alt="A stylish young man and woman planning their tasks together"
                 width={800}
                 height={1000}
-                className="w-full h-auto object-contain filter drop-shadow-sm"
+                className="w-full h-auto object-contain filter drop-shadow-sm mix-blend-multiply"
                 priority
               />
             </div>

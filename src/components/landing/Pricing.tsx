@@ -121,16 +121,18 @@ export default function Pricing() {
                 <span className="text-sm text-[#A3A3A3]">{tier.period}</span>
               </div>
 
-              <Button
-                className={`w-full rounded-lg h-10 text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                  tier.popular
-                    ? "bg-[#1A1A1A] text-white hover:bg-[#333]"
-                    : "bg-[#F5F5F5] text-[#1A1A1A] border border-[#E5E5E5] hover:bg-[#EAEAEA]"
-                }`}
-                aria-label={`Get started with ${tier.name}`}
-              >
-                Get Started
-              </Button>
+              <a href="/waitlist" className="w-full block">
+                <Button
+                  className={`w-full rounded-lg h-10 text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                    tier.popular
+                      ? "bg-[#1A1A1A] text-white hover:bg-[#333]"
+                      : "bg-[#F5F5F5] text-[#1A1A1A] border border-[#E5E5E5] hover:bg-[#EAEAEA]"
+                  }`}
+                  aria-label={`Get started with ${tier.name}`}
+                >
+                  Get Started
+                </Button>
+              </a>
 
               <ul className="mt-6 space-y-2.5">
                 {tier.features.map((feat, j) => (
