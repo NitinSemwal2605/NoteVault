@@ -1,5 +1,6 @@
 "use client";
 
+import { useForm, ValidationError } from "@formspree/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,47 +8,9 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 export default function WaitlistPage() {
-  const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_ID || "");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError("");
-    
-    try {
-      // NOTE: Replace "YOUR_FORMSPREE_ID" with your actual Formspree form ID (e.g., xqkrpowa)
-      // Or pass it via environment variable: process.env.NEXT_PUBLIC_FORMSPREE_ID
-      const formspreeEndpoint = "https://formspree.io/f/YOUR_FORMSPREE_ID";
-      
-      const response = await fetch(formspreeEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ name, email }),
-      });
-
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        const data = await response.json();
-        if (Object.hasOwn(data, 'errors')) {
-          setError(data.errors.map((err: any) => err.message).join(", "));
-        } else {
-          setError("Oops! There was a problem submitting your form");
-        }
-      }
-    } catch (err) {
-      setError("Oops! There was a problem submitting your form. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] flex flex-col font-[var(--font-plus-jakarta),sans-serif]">
@@ -106,7 +69,7 @@ export default function WaitlistPage() {
           {/* Right: Form */}
           <div className="max-w-md w-full shrink-0">
             <div className="bg-white border-2 border-[#1A1A1A] rounded-2xl p-8 sm:p-10 shadow-[8px_8px_0_rgba(26,26,26,1)] transition-all duration-300">
-              {!submitted ? (
+              {!state.succeeded ? (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.2em] font-bold text-[#1A1A1A] bg-[#F5F5F5] px-3 py-1.5 rounded-full border border-[#E5E5E5] mb-6">
@@ -136,6 +99,12 @@ export default function WaitlistPage() {
                       onChange={(e) => setName(e.target.value)}
                       className="h-12 border-2 border-[#E5E5E5] focus-visible:ring-0 focus-visible:border-[#1A1A1A] rounded-xl text-base shadow-sm"
                     />
+                    <ValidationError 
+                      prefix="Name" 
+                      field="name"
+                      errors={state.errors}
+                      className="text-red-500 text-xs mt-1 font-bold"
+                    />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-bold text-[#1A1A1A] mb-1.5">
@@ -151,21 +120,27 @@ export default function WaitlistPage() {
                       onChange={(e) => setEmail(e.target.value)}
                       className="h-12 border-2 border-[#E5E5E5] focus-visible:ring-0 focus-visible:border-[#1A1A1A] rounded-xl text-base shadow-sm"
                     />
+                    <ValidationError 
+                      prefix="Email" 
+                      field="email"
+                      errors={state.errors}
+                      className="text-red-500 text-xs mt-1 font-bold"
+                    />
                   </div>
                   
-                  {error && (
+                  {state.errors && state.errors.length > 0 && !state.errors.some(err => err.field) && (
                     <div className="text-red-500 text-sm font-semibold bg-red-50 p-3 rounded-lg border border-red-200">
-                      {error}
+                      {state.errors.map(err => err.message).join(", ")}
                     </div>
                   )}
 
                   <Button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={state.submitting}
                     className="w-full h-12 mt-4 rounded-xl bg-[#1A1A1A] text-white text-[15px] font-bold hover:bg-[#333] transition-all duration-200 shadow-[3px_3px_0_rgba(26,26,26,1)] hover:shadow-[5px_5px_0_rgba(26,26,26,1)] hover:-translate-y-0.5 group cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[3px_3px_0_rgba(26,26,26,1)]"
                   >
-                    {isSubmitting ? "Joining..." : "Join the queue"}
-                    {!isSubmitting && <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />}
+                    {state.submitting ? "Joining..." : "Join the queue"}
+                    {!state.submitting && <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />}
                   </Button>
                 </form>
               </div>
