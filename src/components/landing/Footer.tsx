@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 const footerLinks = {
   Product: ["Features", "Pricing", "Changelog", "Integrations"],
@@ -16,9 +17,16 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <a
               href="/"
-              className="flex items-center gap-2 font-[var(--font-plus-jakarta)] text-lg font-extrabold text-[#1A1A1A] mb-3 tracking-tight"
+              className="flex items-center gap-2.5 font-[var(--font-plus-jakarta)] text-lg font-extrabold text-[#1A1A1A] mb-3 tracking-tight"
             >
-              <span className="text-xl" aria-hidden="true">📝</span>
+              <div className="relative w-8 h-8">
+                <Image
+                  src="/logo.png"
+                  alt="NotesVaults Logo"
+                  fill
+                  className="object-contain mix-blend-multiply"
+                />
+              </div>
               NotesVaults
             </a>
             <p className="text-sm text-[#A3A3A3] leading-relaxed">

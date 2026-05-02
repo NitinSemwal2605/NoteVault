@@ -55,11 +55,17 @@ export default function WaitlistPage() {
       <header className="py-6 px-6 lg:px-8 border-b border-[#E5E5E5]">
         <a
           href="/"
-          className="flex items-center gap-3 group w-max"
+          className="flex items-center gap-2.5 group w-max"
           aria-label="NotesVaults Home"
         >
-          <div className="w-9 h-9 rounded-xl bg-[#1A1A1A] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200">
-            <span className="text-white font-bold text-lg leading-none select-none">N</span>
+          <div className="relative w-10 h-10 group-hover:scale-105 transition-transform duration-200">
+            <Image
+              src="/logo.png"
+              alt="NotesVaults Logo"
+              fill
+              className="object-contain mix-blend-multiply"
+              priority
+            />
           </div>
           <span className="font-[var(--font-plus-jakarta)] text-xl font-extrabold text-[#1A1A1A] tracking-tight">
             NotesVaults
