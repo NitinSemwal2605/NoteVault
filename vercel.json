@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm install --prefix landingpage && npm run build --prefix landingpage",
+  "outputDirectory": "landingpage/.next",
+  "framework": "nextjs"
+}
