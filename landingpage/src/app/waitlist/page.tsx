@@ -1,11 +1,11 @@
 "use client";
 
-import { useForm, ValidationError } from "@formspree/react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CheckCircle2, ArrowRight } from "lucide-react";
+import { useForm, ValidationError } from "@formspree/react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function WaitlistPage() {
   const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORMSPREE_ID || "");
@@ -128,11 +128,10 @@ export default function WaitlistPage() {
                     />
                   </div>
                   
-                  {state.errors && state.errors.length > 0 && !state.errors.some(err => err.field) && (
-                    <div className="text-red-500 text-sm font-semibold bg-red-50 p-3 rounded-lg border border-red-200">
-                      {state.errors.map(err => err.message).join(", ")}
-                    </div>
-                  )}
+                  <ValidationError 
+                    errors={state.errors}
+                    className="text-red-500 text-sm font-semibold bg-red-50 p-3 rounded-lg border border-red-200 block"
+                  />
 
                   <Button
                     type="submit"
