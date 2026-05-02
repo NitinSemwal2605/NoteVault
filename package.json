@@ -1,0 +1,11 @@
+{
+  "name": "notesvault-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix landingpage",
+    "build": "npm run build --prefix landingpage",
+    "start": "npm run start --prefix landingpage",
+    "install-all": "npm install --prefix landingpage && npm install --prefix frontend && npm install --prefix backend",
+    "vercel-build": "npm install --prefix landingpage && npm run build --prefix landingpage"
+  }
+}
